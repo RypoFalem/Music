@@ -2,7 +2,6 @@ package io.github.rypofalem.music;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -10,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 public class MusicPlayer {
 	
@@ -60,7 +60,7 @@ public class MusicPlayer {
 			if(p == null ) continue;
 			if(!p.isOnline()) continue;
 			for(MusicalNote note : notes){
-				p.playSound(p.getLocation(), note.getSound(), note.getVolume(), note.getPitch());
+				p.playSound(p.getLocation().add(new Vector().setY(1)), note.getSound(), note.getVolume(), note.getPitch());
 				Music.print(""+ note.getSound().toString());
 			}
 		}

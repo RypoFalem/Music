@@ -1,17 +1,16 @@
 package io.github.rypofalem.music;
 
-import org.bukkit.Note;
 import org.bukkit.Sound;
 
 public class MusicalNote{
 	
-	int tick;
+	float beat;
 	Sound sound;
 	float volume;
 	float pitch;
 	
-	public MusicalNote(int tick, Sound sound, float volume, float pitch) {
-		this.tick = tick;
+	public MusicalNote(float beat, Sound sound, float volume, float pitch) {
+		this.beat = beat;
 		this.sound = sound;
 		this.volume = volume;
 		this.pitch = pitch;
@@ -29,7 +28,7 @@ public class MusicalNote{
 		return pitch;
 	}
 	
-	public int getTick(){
-		return tick;
+	public float getBeat(){
+		return beat;
 	}
 }

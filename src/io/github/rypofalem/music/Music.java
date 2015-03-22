@@ -1,7 +1,6 @@
 package io.github.rypofalem.music;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -35,16 +34,15 @@ public class Music extends JavaPlugin implements Listener {
 		print("Playing music!");
 		ArrayList<MusicalNote> notes = new ArrayList<MusicalNote>();
 		Sound test = Sound.NOTE_PIANO;
-		int beat = (int)(11);
-		notes.add(new MusicalNote(1*beat, test, 3, 1.05f));
-		notes.add(new MusicalNote(2*beat+5, test, 3, 1.05f));
-		notes.add(new MusicalNote(3*beat, test, 3, 1.6f));
-		notes.add(new MusicalNote(4*beat, test, 3, 1.6f));
-		notes.add(new MusicalNote(5*beat, test, 3, 1.8f));
-		notes.add(new MusicalNote(6*beat+5, test, 3, 1.8f));
-		notes.add(new MusicalNote(7*beat, test, 3, 1.6f));
-		
+		notes.add(new MusicalNote(1, test, 3, 1.05f));
+		notes.add(new MusicalNote(2.5f, test, 3, 1.05f));
+		notes.add(new MusicalNote(3, test, 3, 1.6f));
+		notes.add(new MusicalNote(4, test, 3, 1.6f));
+		notes.add(new MusicalNote(5, test, 3, 1.8f));
+		notes.add(new MusicalNote(6.5f, test, 3, 1.8f));
+		notes.add(new MusicalNote(7f, test, 3, 1.6f));
 		Song song = new Song(notes);
+		song.setBPM(90);
 		mp = new MusicPlayer(song, this);
 		mp.addListener(p.getUniqueId());
 		mp.startSong();
