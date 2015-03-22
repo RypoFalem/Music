@@ -1,0 +1,6 @@
+name: Music
+main: io.github.rypofalem.music.Music
+version: 0.1.0
+website: rypofalem.github.io
+author: RypoFalem
+description: reads music from a file and plays it to listeners
