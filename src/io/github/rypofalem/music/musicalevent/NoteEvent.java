@@ -1,15 +1,14 @@
-package io.github.rypofalem.music;
+package io.github.rypofalem.music.musicalevent;
 
 import org.bukkit.Sound;
 
-public class MusicalNote{
+public class NoteEvent extends MusicalEvent{
 	
-	float beat;
 	Sound sound;
 	float volume;
 	float pitch;
 	
-	public MusicalNote(float beat, Sound sound, float volume, float pitch) {
+	public NoteEvent(float beat, Sound sound, float volume, float pitch) {
 		this.beat = beat;
 		this.sound = sound;
 		this.volume = volume;
@@ -29,6 +28,6 @@ public class MusicalNote{
 	}
 	
 	public float getBeat(){
-		return beat;
+		return this.beat;
 	}
 }

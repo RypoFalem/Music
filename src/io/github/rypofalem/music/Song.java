@@ -1,5 +1,9 @@
 package io.github.rypofalem.music;
 
+import io.github.rypofalem.music.musicalevent.MusicalEvent;
+import io.github.rypofalem.music.musicalevent.NoteEvent;
+import io.github.rypofalem.music.musicalevent.TempoEvent;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -9,44 +13,53 @@ import java.util.ArrayList;
  * via MusicPlayer to multiple players will always 
  * broadcast the same notes at about the same time.
  * In order for players to hear the same song 
- * independently, multiple instance of this song
- * must be used.
+ * independently, multiple instance of MusicPlayer
+ * with this song must be used.
  */
 
 public class Song {
-	ArrayList<MusicalNote> song; 	//List of notes
-	int tick=0;						// number of times the song has been updated
-	int index=0; 					// the index of the next note to play
-	boolean finished = false;		// weather or not the song has reached the last note
-	float tpb = 10; 				// ticks per beat
+	private ArrayList<MusicalEvent> song; 	//List of notes and tempo changes
+	private int tick=0;						// number of times the song has been updated
+	private int index=0; 					// the index of the next note to play
+	private boolean finished = false;		// weather or not the song is no longer playing
+	private float tpb = 10; 				// ticks per beat
 	
 	public Song(File file){
-		tpb =10;
+		
 	}
 	
-	public Song(ArrayList<MusicalNote> song){
+	public Song(ArrayList<MusicalEvent> song){
 		this.song =song;
 	}
 
-	public ArrayList<MusicalNote> playNext() {
-		ArrayList<MusicalNote> notes = new ArrayList<MusicalNote>();
+	public ArrayList<NoteEvent> playNext() {
+		ArrayList<NoteEvent> notes = new ArrayList<NoteEvent>();
 		
 		while( index<song.size()){
-			MusicalNote note = song.get(index);
-			if(note.getBeat() * tpb <= tick){
-				notes.add(note);
+			MusicalEvent me = song.get(index);
+			if((me.getBeat() * tpb) <= tick){
+				if(me instanceof NoteEvent){
+					notes.add((NoteEvent)me);
+				}else if(me instanceof TempoEvent){
+					setBPM(((TempoEvent) me).getBPM());
+				}
 				index++;
 			}else{
 				break;
 			}
 		}
-		if(index>=song.size()) finished = true;
+		if(index>=song.size()) setFinished(true);
 		tick++;
 		return notes;
+	}
+	
+	protected void setFinished (boolean isFinished){
+		finished = isFinished;
 	}
 
 	public boolean isFinished() {
 		return finished;
+		
 	}
 	
 	public void reset(){
@@ -56,11 +69,15 @@ public class Song {
 	}
 	
 	public void setTPB(float tpb){
-		if(index > 1) return; //TODO throw exception
+		tick = (int) (tick * tpb / this.tpb);
 		this.tpb = tpb;
 	}
 	
 	public void setBPM(float bpm){
 		setTPB(1200f/bpm);
+	}
+	
+	public float getBPM(){
+		return 1200f/tpb;
 	}
 }

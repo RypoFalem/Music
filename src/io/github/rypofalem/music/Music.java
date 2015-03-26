@@ -1,10 +1,9 @@
 package io.github.rypofalem.music;
 
-import java.util.ArrayList;
+import io.github.rypofalem.songhelper.SongHelper;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +11,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Music extends JavaPlugin implements Listener {
-	MusicPlayer mp;
+	MusicPlayer mp = null;
+	static boolean debug=true;
 	
 	public void onEnable(){
 		//load Songs
@@ -26,29 +26,55 @@ public class Music extends JavaPlugin implements Listener {
 	@EventHandler
 	public void play(PlayerInteractEvent e){
 		if(!e.hasItem()) return;
-		if(!(e.getMaterial() == Material.DIAMOND)) return;
-		playMusic(e.getPlayer());
+		if((e.getMaterial() == Material.DIAMOND)){
+			playMusic(e.getPlayer(), new Song(SongHelper.tetrisA()));
+		}
+		if((e.getMaterial() == Material.EMERALD)){
+			playMusic(e.getPlayer(), new Song(SongHelper.zeldaValley()));
+		}
+		if((e.getMaterial() == Material.IRON_INGOT)){
+			playMusic(e.getPlayer(), new Song(SongHelper.mario64Bowser()));
+		}
+		if((e.getMaterial() == Material.GOLD_INGOT)){
+			playMusic(e.getPlayer(), new Song(SongHelper.darkcloudVillage()));
+		}
+		if((e.getMaterial() == Material.INK_SACK)){ //Ink sack means dye means lapis for some god damned reason
+			playMusic(e.getPlayer(), new Song(SongHelper.zeldaOverworld()));
+		}
+		if((e.getMaterial() == Material.COAL)){
+			playMusic(e.getPlayer(), new Song(SongHelper.dearlyBeloved()));
+		}
+		if((e.getMaterial() == Material.REDSTONE)){
+			playMusic(e.getPlayer(), new Song(SongHelper.pokemonChampion()));
+		}
+		if((e.getMaterial() == Material.GLOWSTONE_DUST)){
+			playMusic(e.getPlayer(), new Song(SongHelper.finalCountDown()));
+		}
+		if((e.getMaterial() == Material.QUARTZ)){
+			playMusic(e.getPlayer(), new Song(SongHelper.stillAlive()));
+		}
+		if((e.getMaterial() == Material.ANVIL)){
+			playMusic(e.getPlayer(), new Song(SongHelper.khEndOfWorld()));
+		}
+		if((e.getMaterial() == Material.ROTTEN_FLESH)){
+			mp.stopSong();
+		}
 	}
 	
-	public void playMusic(Player p){
-		print("Playing music!");
-		ArrayList<MusicalNote> notes = new ArrayList<MusicalNote>();
-		Sound test = Sound.NOTE_PIANO;
-		notes.add(new MusicalNote(1, test, 3, 1.05f));
-		notes.add(new MusicalNote(2.5f, test, 3, 1.05f));
-		notes.add(new MusicalNote(3, test, 3, 1.6f));
-		notes.add(new MusicalNote(4, test, 3, 1.6f));
-		notes.add(new MusicalNote(5, test, 3, 1.8f));
-		notes.add(new MusicalNote(6.5f, test, 3, 1.8f));
-		notes.add(new MusicalNote(7f, test, 3, 1.6f));
-		Song song = new Song(notes);
-		song.setBPM(90);
-		mp = new MusicPlayer(song, this);
+	
+	public void playMusic(Player p, Song song){
+		if(mp== null){
+			mp =new MusicPlayer(song, this);
+		}
+		mp.setSong(song);
 		mp.addListener(p.getUniqueId());
 		mp.startSong();
 	}
 	
+	
+	
 	public static void print(String s){
+		if(!debug) return;
 		Bukkit.getServer().broadcastMessage("Music - " + s);
 	}
 }
