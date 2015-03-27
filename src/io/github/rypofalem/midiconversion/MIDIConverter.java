@@ -32,13 +32,13 @@ public class MIDIConverter {
 	public static final int SMPTE_OFFSET = 0x54;
 	public static final int TIMESIG = 0x58;
 	public static ArrayList<MusicalEvent> events = new ArrayList<MusicalEvent>();
-	static String FileName= "End_of_the_World_Battle.mid";
+	static String FileName= "Dark Cloud - Matataki Village.mid";
 	
 	public static void main(String[] args){
 		Sequence sequence = null;
 		try {
 			sequence = MidiSystem.getSequence(new File(FileName));
-			File songfile = new File(FileName+ ".song");
+			File songfile = new File(FileName + ".song");
 			songfile.delete();
 		} catch (InvalidMidiDataException e) {e.printStackTrace();System.exit(1);} catch (IOException e) {e.printStackTrace(); System.exit(1);}
 		float tpb= sequence.getResolution();
@@ -61,8 +61,6 @@ public class MIDIConverter {
 					default: typeString = m.getClass().getName();
 					break;
 					}
-					byte[] fulldata = ((MetaMessage) m).getData();
-					//System.out.println(e.getTick() + " " +typeString + " " + toInt(fulldata));
 				}
 				if (m instanceof ShortMessage) {
 					ShortMessage sm = (ShortMessage) m;
@@ -75,8 +73,9 @@ public class MIDIConverter {
 						float beat =(float)e.getTick()/tpb;
 						Sound sound = getSoundFromOctave(octave);
 						float pitch = getPitchFromKey(key);
-						float volume = (float)velocity*3 /100;
+						float volume = (float)velocity*3 / (float)100;
 						if(sound == Sound.NOTE_BASS || sound == Sound.ORB_PICKUP) volume /=4;
+						if(volume == 0) continue;
 						addEvent(new NoteEvent(beat, sound, volume , pitch));
 						//System.out.println(e.getTick() + " " + " key=" + key + " velocity: " + velocity);
 					}
@@ -86,10 +85,10 @@ public class MIDIConverter {
 		for(MusicalEvent e: events){
 			if(e instanceof NoteEvent){
 				NoteEvent ne = (NoteEvent)e;
-				writeToFile("notes.add(new NoteEvent(" + ne.getBeat()+ "f, Sound." + ne.getSound().toString() +", " + ne.getVolume() +"f, " + ne.getPitch() + "f));");
+				writeToFile(ne.getBeat() + " Note " + ne.getPitch() + " " + ne.getSound().toString() +" Volume " + ne.getVolume());
 			}else if(e instanceof TempoEvent){
 				TempoEvent te = (TempoEvent)e;
-				writeToFile("notes.add( new TempoEvent(" + te.getBPM()+ "f, " + te.getBeat() + "f) ); ");
+				writeToFile(te.getBeat() + " Tempo " + te.getBPM());
 			}
 		}
 	}
@@ -97,7 +96,7 @@ public class MIDIConverter {
 	public static void writeToFile(String s){
 		FileWriter writer = null;
 		PrintWriter printer =null;
-		File file = new File(FileName + ".song");
+		File file = new File(FileName.substring(0, FileName.lastIndexOf(".mid")) + ".song");
 		try {
 			writer = new FileWriter(file, true);
 			printer = new PrintWriter(writer);
@@ -107,8 +106,6 @@ public class MIDIConverter {
 		}
 		printer.println(s);
 		printer.close();
-			
-	
 	}
 	
 	//takes the last 4 bytes of a byte array and shoves the data into an integer.
@@ -127,6 +124,7 @@ public class MIDIConverter {
 			if(newEvent.getBeat() <= me.getBeat()){
 				events.add(i, newEvent);
 				inserted = true;
+				i++;
 				break;
 			}
 			i++;

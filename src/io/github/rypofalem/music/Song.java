@@ -24,12 +24,16 @@ public class Song {
 	private boolean finished = false;		// weather or not the song is no longer playing
 	private float tpb = 10; 				// ticks per beat
 	
-	public Song(File file){
-		
+	public Song(File file) throws Exception{
+		this.song =new SongReader(file).getSongEvents();
 	}
 	
 	public Song(ArrayList<MusicalEvent> song){
 		this.song =song;
+	}
+
+	public Song(String filename) throws Exception {
+		this.song = new SongReader(filename).getSongEvents();
 	}
 
 	public ArrayList<NoteEvent> playNext() {

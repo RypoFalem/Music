@@ -14,6 +14,13 @@ public class NoteEvent extends MusicalEvent{
 		this.volume = volume;
 		this.pitch = pitch;
 	}
+	
+	public NoteEvent(float beat, String sound, float volume, float pitch) {
+		this.beat = beat;
+		this.sound = Sound.valueOf(sound);
+		this.volume = volume;
+		this.pitch = pitch;
+	}
 
 	public Sound getSound() {
 		return sound;

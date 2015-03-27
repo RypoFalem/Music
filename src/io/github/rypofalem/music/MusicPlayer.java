@@ -83,7 +83,7 @@ public class MusicPlayer {
 			if(!p.isOnline()) continue;
 			for(NoteEvent note : notes){
 				p.playSound(p.getLocation().add(new Vector().setY(1)), note.getSound(), note.getVolume(), note.getPitch());
-				
+				Music.print("@beat: " + note.beat + " " + note.getPitch());
 			}
 		}
 	}
