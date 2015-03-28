@@ -23,24 +23,24 @@ public class SongReader {
 	File songfile;
 	ArrayList<MusicalEvent> events;
 
-	public SongReader(File file) throws Exception {
+	protected SongReader(File file) throws Exception {
 		this.songfile = file;
 		events = new ArrayList<MusicalEvent>();
 		if(!file.exists()) throw new Exception("file does not exist! " + file.getAbsolutePath());
 	}
 	
-	public SongReader(String filename) throws Exception {
+	protected SongReader(String filename) throws Exception {
 		this.songfile = new File(filename);
 		events = new ArrayList<MusicalEvent>();
 		if(!songfile.exists()) throw new Exception("Song file does not exist! " + songfile.getAbsolutePath());
 	}
 
-	public Song getSong(){
+	protected Song getSong(){
 		readSong();
 		return new Song(events);
 	}
 	
-	public ArrayList<MusicalEvent> getSongEvents(){
+	protected ArrayList<MusicalEvent> getSongEvents(){
 		readSong();
 		return this.events;
 	}
@@ -71,6 +71,7 @@ public class SongReader {
 					float beat = scanLine.nextFloat();
 					scanLine.next();
 					float tempo = scanLine.nextFloat();
+					scanLine.close();
 					addEvent(new TempoEvent(tempo, beat));
 				}
 			}

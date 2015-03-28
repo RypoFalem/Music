@@ -32,7 +32,7 @@ public class MIDIConverter {
 	public static final int SMPTE_OFFSET = 0x54;
 	public static final int TIMESIG = 0x58;
 	public static ArrayList<MusicalEvent> events = new ArrayList<MusicalEvent>();
-	static String FileName= "Dark Cloud - Matataki Village.mid";
+	static String FileName= "BanjoKazooie - Gruntildas Lair Click Clock Wood.mid";
 	
 	public static void main(String[] args){
 		Sequence sequence = null;

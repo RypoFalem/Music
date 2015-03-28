@@ -1,5 +1,8 @@
 package io.github.rypofalem.music.musicalevent;
 
+/*
+ * Represents a tempo change.
+ */
 
 public class TempoEvent extends MusicalEvent {
 	float bpm;
